@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐾 คอนโด Pet Friendly ในกรุงเทพฯ</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f0f2f5; color: #333; }
+.top-bar { background: linear-gradient(135deg, #2F5496, #1a365d); color: white; padding: 16px 20px; text-align: center; }
+.top-bar h1 { font-size: 22px; }
+.top-bar p { font-size: 13px; opacity: .8; margin-top: 4px; }
+.tabs { display: flex; background: white; border-bottom: 2px solid #e0e0e0; position: sticky; top: 0; z-index: 100; }
+.tab-btn { flex: 1; padding: 12px 8px; border: none; background: none; font-size: 14px; cursor: pointer; color: #666; border-bottom: 3px solid transparent; transition: all .2s; }
+.tab-btn.active { color: #2F5496; border-bottom-color: #2F5496; font-weight: bold; }
+.tab-btn:hover { background: #f5f7fa; }
+.container { max-width: 1200px; margin: 0 auto; padding: 16px; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* Filters */
+.filters { background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+.filter-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.filter-row select, .filter-row input { padding: 10px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; flex: 1; min-width: 150px; background: white; cursor: pointer; }
+.filter-row select:focus, .filter-row input:focus { outline: none; border-color: #2F5496; box-shadow: 0 0 0 2px rgba(47,84,150,.15); }
+.search-box { width: 100%; margin-bottom: 10px; }
+.search-box input { width: 100%; padding: 12px 16px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; }
+.stats-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 14px; color: #666; }
+.stats-bar strong { color: #2F5496; }
+
+/* Cards */
+.condo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px,1fr)); gap: 16px; }
+.condo-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.1); transition: transform .2s, box-shadow .2s; }
+.condo-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.15); }
+.card-header { background: linear-gradient(135deg, #2F5496, #4472C4); color: white; padding: 14px 16px; position: relative; }
+.card-header h3 { font-size: 16px; margin-bottom: 2px; }
+.card-header .name-th { font-size: 13px; opacity: .85; }
+.card-header .badge { position: absolute; top: 8px; right: 8px; background: rgba(255,255,255,.2); padding: 3px 10px; border-radius: 12px; font-size: 11px; }
+.card-body { padding: 14px 16px; }
+.info-row { display: flex; margin-bottom: 6px; font-size: 13px; }
+.info-row .label { color: #888; min-width: 90px; }
+.info-row .value { flex: 1; }
+.price-tag { display: inline-block; padding: 3px 10px; border-radius: 8px; font-size: 12px; margin: 2px; }
+.price-rent { background: #E3F2FD; color: #1565C0; }
+.price-sale { background: #FFF3E0; color: #E65100; }
+.price-low { background: #C8E6C9; color: #2E7D32; }
+.price-mid { background: #D7CCC8; color: #4E342E; }
+.price-high { background: #FFCDD2; color: #C62828; }
+.card-actions { display: flex; gap: 6px; padding: 10px 16px; border-top: 1px solid #eee; }
+.card-actions button { flex: 1; padding: 8px; border: none; border-radius: 6px; font-size: 12px; cursor: pointer; transition: .2s; }
+.btn-share { background: #E3F2FD; color: #1565C0; }
+.btn-share:hover { background: #BBDEFB; }
+.btn-contact { background: #E8F5E9; color: #2E7D32; }
+.btn-contact:hover { background: #C8E6C9; }
+.btn-map { background: #F3E5F5; color: #6A1B9A; }
+.btn-map:hover { background: #E1BEE7; }
+
+/* Listing Form */
+.form-card { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,.1); max-width: 700px; margin: 0 auto; }
+.form-card h2 { margin-bottom: 20px; color: #2F5496; }
+.form-group { margin-bottom: 16px; }
+.form-group label { display: block; margin-bottom: 4px; font-size: 14px; font-weight: 500; color: #555; }
+.form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; font-family: inherit; }
+.form-group textarea { resize: vertical; min-height: 80px; }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #2F5496; }
+.form-row { display: flex; gap: 12px; }
+.form-row .form-group { flex: 1; }
+.submit-btn { background: linear-gradient(135deg, #2F5496, #1a365d); color: white; padding: 14px 32px; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: .2s; }
+.submit-btn:hover { opacity: .9; }
+
+/* User Listings */
+.listing-card { background: white; border-radius: 12px; padding: 16px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+.listing-card .meta { display: flex; gap: 12px; flex-wrap: wrap; font-size: 13px; color: #888; margin-top: 8px; }
+.listing-card .meta span { background: #f5f5f5; padding: 2px 10px; border-radius: 12px; }
+.listing-card h4 { color: #2F5496; margin-bottom: 6px; }
+.listing-card .desc { font-size: 13px; color: #555; margin: 6px 0; }
+.delete-btn { background: #FFEBEE; color: #C62828; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+
+/* Share Modal */
+.modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,.5); z-index: 1000; align-items: center; justify-content: center; }
+.modal.active { display: flex; }
+.modal-content { background: white; border-radius: 16px; padding: 24px; max-width: 400px; width: 90%; position: relative; }
+.modal-content h3 { margin-bottom: 16px; }
+.close-btn { position: absolute; top: 12px; right: 16px; border: none; background: none; font-size: 24px; cursor: pointer; color: #999; }
+.social-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
+.social-btn { flex: 1; padding: 12px; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; color: white; text-align: center; min-width: 80px; }
+.social-btn.fb { background: #1877F2; }
+.social-btn.line { background: #00B900; }
+.social-btn.twitter { background: #1DA1F2; }
+.social-btn.copy { background: #666; }
+.copy-input { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 12px; margin-top: 8px; }
+
+/* Empty state */
+.empty-state { text-align: center; padding: 60px 20px; color: #999; }
+.empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+
+/* Notification */
+.toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 12px 24px; border-radius: 8px; font-size: 14px; z-index: 2000; opacity: 0; transition: opacity .3s; }
+.toast.show { opacity: 1; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .condo-grid { grid-template-columns: 1fr; }
+  .form-row { flex-direction: column; }
+  .filter-row { flex-direction: column; }
+  .filter-row select, .filter-row input { min-width: auto; }
+  .top-bar h1 { font-size: 18px; }
+}
+
+/* Listing posted tag */
+.tag-posted { background: #FF9800; color: white; padding: 2px 8px; border-radius: 4px; font-size: 11px; margin-left: 6px; }
+
+/* Pet badge */
+.pet-badge { display: inline-block; background: #E8F5E9; color: #2E7D32; padding: 2px 8px; border-radius: 4px; font-size: 11px; }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <h1>🐾 คอนโด Pet Friendly กรุงเทพฯ</h1>
+  <p>รวมข้อมูลคอนโดที่เลี้ยงสัตว์ได้ ครอบคลุม 50 เขต ในกรุงเทพมหานคร</p>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('browse')">🏢 ค้นหาคอนโด</button>
+  <button class="tab-btn" onclick="switchTab('post')">📝 โพสต์ประกาศ</button>
+  <button class="tab-btn" onclick="switchTab('listings')">📋 ประกาศของฉัน</button>
+</div>
+
+<div class="container">
+
+  <!-- TAB 1: Browse -->
+  <div id="tab-browse" class="tab-content active">
+    <div class="filters">
+      <div class="search-box">
+        <input type="text" id="searchText" placeholder="🔍 ค้นหาชื่อโครงการ, ที่อยู่, BTS/MRT..." oninput="filterCondos()">
+      </div>
+      <div class="filter-row">
+        <select id="filterDistrict" onchange="filterCondos()">
+          <option value="">📍 ทุกเขต</option>
+        </select>
+        <select id="filterRent" onchange="filterCondos()">
+          <option value="">💰 ค่าเช่าทุกช่วง</option>
+          <option value="<10K">น้อยกว่า 10,000</option>
+          <option value="10K-20K">10,000 - 20,000</option>
+          <option value="20K-50K">20,000 - 50,000</option>
+          <option value="50K-100K">50,000 - 100,000</option>
+          <option value=">100K">มากกว่า 100,000</option>
+        </select>
+        <select id="filterSale" onchange="filterCondos()">
+          <option value="">🏠 ราคาขายทุกช่วง</option>
+          <option value="<2M">น้อยกว่า 2 ล้าน</option>
+          <option value="2M-5M">2 - 5 ล้าน</option>
+          <option value="5M-10M">5 - 10 ล้าน</option>
+          <option value="10M-20M">10 - 20 ล้าน</option>
+          <option value=">20M">มากกว่า 20 ล้าน</option>
+        </select>
+        <select id="filterBTS" onchange="filterCondos()">
+          <option value="">🚈 ทุกสาย</option>
+          <option value="BTS">BTS</option>
+          <option value="MRT">MRT</option>
+          <option value="ARL">ARL</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="stats-bar">
+      <span>พบ <strong id="resultCount">0</strong> โครงการ</span>
+      <span><span id="districtCount">0</span> เขต</span>
+    </div>
+
+    <div id="condoList" class="condo-grid"></div>
+    <div id="emptyState" class="empty-state" style="display:none">
+      <div class="icon">🔍</div>
+      <h3>ไม่พบโครงการที่ตรงกับเงื่อนไข</h3>
+      <p>ลองเปลี่ยนคำค้นหาหรือปรับตัวกรอง</p>
+    </div>
+  </div>
+
+  <!-- TAB 2: Post Listing -->
+  <div id="tab-post" class="tab-content">
+    <div class="form-card">
+      <h2>📝 โพสต์ประกาศให้เช่า/ขาย</h2>
+      <p style="color:#888;margin-bottom:16px;font-size:13px;">โพสต์ประกาศห้องให้เช่าหรือขายต่อในคอนโด Pet Friendly</p>
+      <div class="form-group">
+        <label>ชื่อโครงการ</label>
+        <input type="text" id="postProject" list="projectList" placeholder="พิมพ์หรือเลือกชื่อโครงการ">
+        <datalist id="projectList"></datalist>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>ประเภท</label>
+          <select id="postType">
+            <option value="rent">ให้เช่า</option>
+            <option value="sale">ขาย</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>ราคา (บาท)</label>
+          <input type="number" id="postPrice" placeholder="เช่น 25000">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>ขนาดห้อง (ตร.ม.)</label>
+          <input type="number" id="postSize" placeholder="เช่น 35">
+        </div>
+        <div class="form-group">
+          <label>จำนวนห้องนอน</label>
+          <select id="postBed">
+            <option value="Studio">Studio</option>
+            <option value="1 Bedroom">1 Bedroom</option>
+            <option value="2 Bedrooms">2 Bedrooms</option>
+            <option value="3 Bedrooms">3 Bedrooms</option>
+            <option value="4+ Bedrooms">4+ Bedrooms</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>เบอร์โทรติดต่อ</label>
+          <input type="text" id="postPhone" placeholder="เช่น 081-234-5678">
+        </div>
+        <div class="form-group">
+          <label>Line ID / Email</label>
+          <input type="text" id="postContact" placeholder="Line ID หรือ Email">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>รายละเอียดเพิ่มเติม</label>
+        <textarea id="postDesc" placeholder="เช่น ชั้นที่, เฟอร์นิเจอร์, สัตว์เลี้ยงที่อนุญาต, สิ่งอำนวยความสะดวก..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>รูปภาพ (URL)</label>
+        <input type="url" id="postImage" placeholder="https://... (ใส่ลิงก์รูปภาพได้)">
+      </div>
+      <button class="submit-btn" onclick="submitListing()">📌 โพสต์ประกาศ</button>
+    </div>
+  </div>
+
+  <!-- TAB 3: My Listings -->
+  <div id="tab-listings" class="tab-content">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <h2 style="color:#2F5496;">📋 ประกาศของฉัน</h2>
+      <span id="listingCount" style="color:#888;font-size:14px;"></span>
+    </div>
+    <div id="userListings"></div>
+    <div id="noListings" class="empty-state">
+      <div class="icon">📝</div>
+      <h3>ยังไม่มีประกาศ</h3>
+      <p>โพสต์ประกาศให้เช่าหรือขายครั้งแรกเลย!</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- Share Modal -->
+<div id="shareModal" class="modal">
+  <div class="modal-content">
+    <button class="close-btn" onclick="closeShare()">&times;</button>
+    <h3>📤 แชร์โครงการนี้</h3>
+    <p style="color:#666;margin-bottom:16px;font-size:14px;" id="shareTitle"></p>
+    <div class="social-buttons">
+      <button class="social-btn fb" onclick="shareFB()">Facebook</button>
+      <button class="social-btn line" onclick="shareLine()">LINE</button>
+      <button class="social-btn twitter" onclick="shareTwitter()">X (Twitter)</button>
+      <button class="social-btn copy" onclick="shareCopy()">Copy</button>
+    </div>
+    <input class="copy-input" id="shareUrl" readonly>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+// ====== DATA ======
+let CONDO_DATA = [{"name": "Park Origin Thonglor", "name_th": "พาร์ค ออริจิ้น ทองหล่อ", "district": "เขตวัฒนา", "address": "ซอยทองหล่อ 10 ถนนสุขุมวิท 55 แขวงคลองตันเหนือ เขตวัฒนา กรุงเทพฯ 10110", "lat": 13.7325, "lon": 100.58, "units": 1182, "room_sizes": "30-97 ตร.ม.", "sale_price": "7,500,000 - 26,000,000", "rent_price": "26,000 - 120,000", "developer": "Origin Property", "phone": "1498", "email": "info@origin.co.th", "bts": "BTS ทองหล่อ", "pet_policy": "อนุญาตสัตว์เลี้ยงทุกขนาด"}, {"name": "The Monument Thonglor", "name_th": "เดอะ โมนูเมนต์ ทองหล่อ", "district": "เขตวัฒนา", "address": "998 ถนนทองหล่อ ซอยสุขุมวิท 55 แขวงคลองตันเหนือ เขตวัฒนา กรุงเทพฯ 10110", "lat": 13.734, "lon": 100.582, "units": 127, "room_sizes": "125-295 ตร.ม.", "sale_price": "25,000,000 - 80,000,000", "rent_price": "90,000 - 200,000", "developer": "Sansiri", "phone": "1685", "email": "info@sansiri.com", "bts": "BTS ทองหล่อ", "pet_policy": "สุนัข ≤15 กก., แมว, สัตว์ขนาดเล็ก"}, {"name": "M Thonglor 10", "name_th": "เอ็ม ทองหล่อ 10", "district": "เขตวัฒนา", "address": "ซอยทองหล่อ 10 ถนนสุขุมวิท 55 แขวงคลองตันเหนือ เขตวัฒนา กรุงเทพฯ 10110", "lat": 13.731, "lon": 100.578, "units": 160, "room_sizes": "35-144 ตร.ม.", "sale_price": "4,650,000 - 35,000,000", "rent_price": "20,000 - 60,000", "developer": "Major Development", "phone": "02-116-1111", "email": "info@mde.co.th", "bts": "BTS ทองหล่อ", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "The Strand Thonglor", "name_th": "เดอะ สแตรนด์ ทองหล่อ", "district": "เขตวัฒนา", "address": "ซอยทองหล่อ แขวงคลองตันเหนือ เขตวัฒนา กรุงเทพฯ 10110", "lat": 13.733, "lon": 100.581, "units": 100, "room_sizes": "80-200 ตร.ม.", "sale_price": "20,000,000 - 60,000,000", "rent_price": "150,000 - 250,000", "developer": "Sansiri", "phone": "1685", "email": "info@sansiri.com", "bts": "BTS ทองหล่อ", "pet_policy": "อนุญาตสัตว์เลี้ยงทุกขนาด (แจ้งล่วงหน้า)"}, {"name": "Fullerton Sukhumvit", "name_th": "ฟูลเลอตัน สุขุมวิท", "district": "เขตวัฒนา", "address": "1219/2 ถนนสุขุมวิท แขวงคลองตันเหนือ เขตวัฒนา กรุงเทพฯ 10110", "lat": 13.735, "lon": 100.575, "units": 139, "room_sizes": "105-152 ตร.ม.", "sale_price": "14,500,000 - 34,900,000", "rent_price": "57,000 - 100,000", "developer": "Sansiri", "phone": "1685", "email": "info@sansiri.com", "bts": "BTS พร้อมพงษ์", "pet_policy": "อนุญาตแมวและสุนัข"}, {"name": "Maru Ekkamai 2", "name_th": "มารุ เอกมัย 2", "district": "เขตวัฒนา", "address": "70-5 ถนนสุขุมวิท 63 (เอกมัย) แขวงพระโขนงเหนือ เขตวัฒนา กรุงเทพฯ 10110", "lat": 13.724, "lon": 100.586, "units": 333, "room_sizes": "28-65 ตร.ม.", "sale_price": "4,500,000 - 8,500,000", "rent_price": "22,000 - 85,000", "developer": "Major Development", "phone": "02-116-1111", "email": "info@mde.co.th", "bts": "BTS เอกมัย", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "The Madison", "name_th": "เดอะ เมดิสัน", "district": "เขตวัฒนา", "address": "737 ถนนสุขุมวิท แขวงคลองตันเหนือ เขตวัฒนา กรุงเทพฯ 10110", "lat": 13.736, "lon": 100.577, "units": 177, "room_sizes": "80-300 ตร.ม.", "sale_price": "24,500,000 - 218,000,000", "rent_price": "60,000 - 200,000", "developer": "Raimon Land", "phone": "02-661-7777", "email": "info@raimonland.com", "bts": "BTS พร้อมพงษ์", "pet_policy": "อนุญาตแมวและสุนัข"}, {"name": "Scope Promsri", "name_th": "สโคป พร้อมศรี", "district": "เขตวัฒนา", "address": "345 ถนนสุขุมวิท 49 แขวงคลองตันเหนือ เขตวัฒนา กรุงเทพฯ 10110", "lat": 13.7345, "lon": 100.579, "units": 150, "room_sizes": "40-120 ตร.ม.", "sale_price": "6,900,000 - 20,000,000", "rent_price": "30,000 - 80,000", "developer": "Sansiri", "phone": "1685", "email": "info@sansiri.com", "bts": "BTS พร้อมพงษ์", "pet_policy": "อนุญาตแมวและสุนัขขนาดเล็ก"}, {"name": "Muniq Sukhumvit 23", "name_th": "มิวนีค สุขุมวิท 23", "district": "เขตวัฒนา", "address": "ซอยสุขุมวิท 23 แขวงคลองเตยเหนือ เขตวัฒนา กรุงเทพฯ 10110", "lat": 13.739, "lon": 100.562, "units": 201, "room_sizes": "34.74-191.11 ตร.ม.", "sale_price": "5,400,000 - 80,000,000", "rent_price": "35,000 - 130,000", "developer": "Major Development", "phone": "087-778-1111", "email": "info@mde.co.th", "bts": "BTS อโศก / MRT สุขุมวิท", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "The Estelle Phrom Phong", "name_th": "ดิ เอสเทลล์ พร้อมพงษ์", "district": "เขตวัฒนา", "address": "131 ซอยสุขุมวิท 26 แขวงคลองตัน เขตคลองเตย กรุงเทพฯ", "lat": 13.728, "lon": 100.567, "units": 157, "room_sizes": "48-99.5 ตร.ม.", "sale_price": "15,000,000 - 50,000,000", "rent_price": "50,000 - 150,000", "developer": "Sansiri", "phone": "1685", "email": "info@sansiri.com", "bts": "BTS พร้อมพงษ์", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "Via 61", "name_th": "เวีย 61", "district": "เขตวัฒนา", "address": "ซอยสุขุมวิท 61 แขวงคลองตันเหนือ เขตวัฒนา กรุงเทพฯ 10110", "lat": 13.725, "lon": 100.59, "units": 150, "room_sizes": "50-187 ตร.ม.", "sale_price": "10,900,000 - 30,000,000", "rent_price": "35,000 - 90,000", "developer": "Sansiri", "phone": "1685", "email": "info@sansiri.com", "bts": "BTS เอกมัย", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "W8 Thonglor 25", "name_th": "ดับบลิว เอท ทองหล่อ 25", "district": "เขตวัฒนา", "address": "ซอยทองหล่อ 25 แขวงคลองตันเหนือ เขตวัฒนา กรุงเทพฯ 10110", "lat": 13.729, "lon": 100.583, "units": 80, "room_sizes": "35-80 ตร.ม.", "sale_price": "6,000,000 - 18,000,000", "rent_price": "25,000 - 70,000", "developer": "Sansiri", "phone": "1685", "email": "info@sansiri.com", "bts": "BTS ทองหล่อ", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "Baan Ananda", "name_th": "บ้าน อนันดา", "district": "เขตวัฒนา", "address": "ซอยสุขุมวิท 63 (เอกมัย) แขวงพระโขนงเหนือ เขตวัฒนา กรุงเทพฯ", "lat": 13.723, "lon": 100.587, "units": 90, "room_sizes": "70-150 ตร.ม.", "sale_price": "12,000,000 - 30,000,000", "rent_price": "150,000+", "developer": "Ananda", "phone": "02-123-4567", "email": "info@ananda.co.th", "bts": "BTS เอกมัย", "pet_policy": "อนุญาตแมวและสุนัข (ต้องแจ้งล่วงหน้า)"}, {"name": "Le Nice Ekamai", "name_th": "เลอ นิส เอกมัย", "district": "เขตวัฒนา", "address": "ซอยสุขุมวิท 63 (เอกมัย) แขวงพระโขนงเหนือ เขตวัฒนา กรุงเทพฯ", "lat": 13.722, "lon": 100.588, "units": 120, "room_sizes": "30-60 ตร.ม.", "sale_price": "4,000,000 - 8,000,000", "rent_price": "25,000 - 45,000", "developer": "LPN Development", "phone": "02-123-4567", "email": "info@lpn.co.th", "bts": "BTS เอกมัย", "pet_policy": "อนุญาตแมวและสุนัขขนาดเล็ก"}, {"name": "Eden Ekkamai", "name_th": "อีเดน เอกมัย", "district": "เขตวัฒนา", "address": "ซอยเอกมัย แขวงพระโขนงเหนือ เขตวัฒนา กรุงเทพฯ", "lat": 13.7245, "lon": 100.5875, "units": 80, "room_sizes": "35-75 ตร.ม.", "sale_price": "5,000,000 - 12,000,000", "rent_price": "20,000 - 50,000", "developer": "-", "phone": "-", "email": "-", "bts": "BTS เอกมัย", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "Nivati Thonglor 23", "name_th": "นิวาติ ทองหล่อ 23", "district": "เขตวัฒนา", "address": "ซอยทองหล่อ 23 แขวงคลองตันเหนือ เขตวัฒนา กรุงเทพฯ", "lat": 13.73, "lon": 100.584, "units": 60, "room_sizes": "45-120 ตร.ม.", "sale_price": "8,000,000 - 25,000,000", "rent_price": "35,000 - 80,000", "developer": "-", "phone": "-", "email": "-", "bts": "BTS ทองหล่อ", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "La Citta Delre Thonglor 16", "name_th": "ลา ซิตต้า เดลเร ทองหล่อ 16", "district": "เขตวัฒนา", "address": "ซอยทองหล่อ 16 แขวงคลองตันเหนือ เขตวัฒนา กรุงเทพฯ", "lat": 13.7315, "lon": 100.5825, "units": 70, "room_sizes": "40-100 ตร.ม.", "sale_price": "7,000,000 - 20,000,000", "rent_price": "30,000 - 65,000", "developer": "-", "phone": "-", "email": "-", "bts": "BTS ทองหล่อ", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "Downtown 49", "name_th": "ดาวทาวน์ โฟร์ตี้ไนน์", "district": "เขตวัฒนา", "address": "ซอยสุขุมวิท 49 แขวงคลองตันเหนือ เขตวัฒนา กรุงเทพฯ", "lat": 13.7335, "lon": 100.5785, "units": 95, "room_sizes": "35-80 ตร.ม.", "sale_price": "4,500,000 - 12,000,000", "rent_price": "18,000 - 45,000", "developer": "-", "phone": "-", "email": "-", "bts": "BTS พร้อมพงษ์", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "Reference Ekkamai", "name_th": "เรฟเฟอเรนซ์ เอกมัย", "district": "เขตวัฒนา", "address": "ซอยเอกมัย แขวงพระโขนงเหนือ เขตวัฒนา กรุงเทพฯ", "lat": 13.726, "lon": 100.586, "units": 110, "room_sizes": "30-65 ตร.ม.", "sale_price": "3,500,000 - 8,000,000", "rent_price": "18,000 - 40,000", "developer": "Sansiri", "phone": "1685", "email": "info@sansiri.com", "bts": "BTS เอกมัย", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "Valles Haus", "name_th": "วาลเลส เฮาส์", "district": "เขตวัฒนา", "address": "55 ถนนฮะโบ แขวงพระโขนงเหนือ เขตวัฒนา กรุงเทพฯ 10110", "lat": 13.72, "lon": 100.595, "units": 400, "room_sizes": "33.75-90.25 ตร.ม.", "sale_price": "4,690,000 - 18,211,000", "rent_price": "15,000 - 40,000", "developer": "Sansiri", "phone": "1685", "email": "info@sansiri.com", "bts": "BTS อ่อนนุช", "pet_policy": "อนุญาตสัตว์เลี้ยง (โครงการ Pet-Welcome)"}, {"name": "Pynn Pridi 20", "name_th": "พินน์ ปรีดี 20", "district": "เขตวัฒนา", "address": "ซอยปรีดีพนมยงค์ 20 แขวงพระโขนงเหนือ เขตวัฒนา กรุงเทพฯ", "lat": 13.721, "lon": 100.594, "units": 200, "room_sizes": "33.5-75.5 ตร.ม.", "sale_price": "6,490,000 - 15,000,000", "rent_price": "25,000 - 55,000", "developer": "Sansiri", "phone": "1685", "email": "info@sansiri.com", "bts": "BTS พระโขนง", "pet_policy": "อนุญาตแมวและสุนัขขนาดเล็ก"}, {"name": "Maestro 39", "name_th": "มาเอสโตร 39", "district": "เขตวัฒนา", "address": "ซอยสุขุมวิท 39 แขวงคลองตันเหนือ เขตวัฒนา กรุงเทพฯ", "lat": 13.734, "lon": 100.576, "units": 150, "room_sizes": "35-80 ตร.ม.", "sale_price": "4,500,000 - 12,000,000", "rent_price": "25,000 - 50,000", "developer": "Major Development", "phone": "02-116-1111", "email": "info@mde.co.th", "bts": "BTS พร้อมพงษ์", "pet_policy": "อนุญาตแมวและสุนัขขนาดเล็ก"}, {"name": "Ideo Morph 38", "name_th": "ไอดีโอ มอร์ฟ 38", "district": "เขตคลองเตย", "address": "ซานติสุข ซอยสุขุมวิท 38 แขวงพระโขนง เขตคลองเตย กรุงเทพฯ 10110", "lat": 13.72098, "lon": 100.5793, "units": 162, "room_sizes": "23-45 ตร.ม.", "sale_price": "6,900,000 - 9,000,000", "rent_price": "28,000 - 36,000", "developer": "Ananda", "phone": "02-123-4567", "email": "info@ananda.co.th", "bts": "BTS ทองหล่อ", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "Aguston Sukhumvit 22", "name_th": "ออกัสตัน สุขุมวิท 22", "district": "เขตคลองเตย", "address": "222/23 ซอยสุขุมวิท 22 แขวงคลองเตย เขตคลองเตย กรุงเทพฯ 10110", "lat": 13.72514, "lon": 100.56488, "units": 269, "room_sizes": "50-280 ตร.ม.", "sale_price": "6,850,000 - 25,000,000", "rent_price": "30,000 - 150,000", "developer": "-", "phone": "-", "email": "-", "bts": "BTS อโศก / MRT สุขุมวิท", "pet_policy": "อนุญาตแมวและสุนัข (ต้องแจ้งล่วงหน้า)"}, {"name": "Ashton Morph 38", "name_th": "แอชตัน มอร์ฟ 38", "district": "เขตคลองเตย", "address": "ซอยสุขุมวิท 38 แขวงพระโขนง เขตคลองเตย กรุงเทพฯ 10110", "lat": 13.7215, "lon": 100.58, "units": 199, "room_sizes": "52-295 ตร.ม.", "sale_price": "6,200,000 - 37,450,000", "rent_price": "29,000 - 60,000", "developer": "Ananda", "phone": "02-123-4567", "email": "info@ananda.co.th", "bts": "BTS ทองหล่อ", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "Cosmo Villa", "name_th": "คอสโม่ วิลล่า", "district": "เขตคลองเตย", "address": "ซอยสุขุมวิท 12 แขวงคลองเตย เขตคลองเตย กรุงเทพฯ", "lat": 13.737, "lon": 100.556, "units": 60, "room_sizes": "30-80 ตร.ม.", "sale_price": "3,500,000 - 10,000,000", "rent_price": "55,000", "developer": "-", "phone": "-", "email": "-", "bts": "BTS อโศก", "pet_policy": "อนุญาตแมวและสุนัขขนาดเล็ก (ต้องแจ้งล่วงหน้า)"}, {"name": "Maestro 01 Sathorn-Yenakat", "name_th": "มาเอสโตร 01 สาทร-เย็นอากาศ", "district": "เขตคลองเตย", "address": "ถนนเย็นอากาศ แขวงทุ่งมหาเมฆ เขตสาทร กรุงเทพฯ 10120", "lat": 13.715, "lon": 100.55, "units": 100, "room_sizes": "33.56-182.18 ตร.ม.", "sale_price": "3,000,000 - 10,000,000", "rent_price": "20,000 - 45,000", "developer": "Major Development", "phone": "02-116-1111", "email": "info@mde.co.th", "bts": "MRT คลองเตย", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "Ficus Lane", "name_th": "ไฟคัส เลน", "district": "เขตคลองเตย", "address": "ซอยสุขุมวิท 44/1 แขวงพระโขนง เขตคลองเตย กรุงเทพฯ", "lat": 13.71388, "lon": 100.58929, "units": 70, "room_sizes": "50-472 ตร.ม.", "sale_price": "18,500,000 - 99,000,000", "rent_price": "30,000 - 235,000", "developer": "-", "phone": "-", "email": "-", "bts": "BTS พระโขนง", "pet_policy": "อนุญาตแมวและสุนัข"}, {"name": "The Pillar", "name_th": "เดอะ พิลลาร์", "district": "เขตคลองเตย", "address": "ซอยสุขุมวิท 44 แขวงพระโขนง เขตคลองเตย กรุงเทพฯ", "lat": 13.714, "lon": 100.588, "units": 80, "room_sizes": "40-100 ตร.ม.", "sale_price": "6,000,000 - 18,000,000", "rent_price": "25,000 - 60,000", "developer": "-", "phone": "-", "email": "-", "bts": "BTS พระโขนง", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "Muniq Langsuan", "name_th": "มิวนีค หลังสวน", "district": "เขตปทุมวัน", "address": "ซอยต้นสน แขวงลุมพินี เขตปทุมวัน กรุงเทพฯ 10330", "lat": 13.742, "lon": 100.542, "units": 166, "room_sizes": "50-179 ตร.ม.", "sale_price": "15,000,000 - 160,000,000", "rent_price": "45,000 - 450,000", "developer": "Major Development", "phone": "02-116-1111", "email": "info@mde.co.th", "bts": "BTS ชิดลม", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "Scope Langsuan", "name_th": "สโคป หลังสวน", "district": "เขตปทุมวัน", "address": "ซอยหลังสวน แขวงลุมพินี เขตปทุมวัน กรุงเทพฯ 10330", "lat": 13.741, "lon": 100.543, "units": 157, "room_sizes": "82-164 ตร.ม.", "sale_price": "35,000,000 - 690,000,000", "rent_price": "129,999 - 500,000", "developer": "Sansiri", "phone": "1685", "email": "info@sansiri.com", "bts": "BTS ราชดำริ", "pet_policy": "อนุญาตสัตว์เลี้ยงทุกขนาด"}, {"name": "Maru Chula", "name_th": "มารุ จุฬา", "district": "เขตปทุมวัน", "address": "117 ถนนเจริญเมือง แขวงรองเมือง เขตปทุมวัน กรุงเทพฯ 10330", "lat": 13.738, "lon": 100.528, "units": 220, "room_sizes": "30-60 ตร.ม.", "sale_price": "3,950,000 - 7,650,000", "rent_price": "15,000 - 35,000", "developer": "Major Development", "phone": "02-116-1111", "email": "info@mde.co.th", "bts": "MRT สามย่าน", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "Grand Langsuan", "name_th": "แกรนด์ หลังสวน", "district": "เขตปทุมวัน", "address": "ถนนหลังสวน แขวงลุมพินี เขตปทุมวัน กรุงเทพฯ", "lat": 13.7415, "lon": 100.544, "units": 200, "room_sizes": "80-200 ตร.ม.", "sale_price": "20,000,000 - 80,000,000", "rent_price": "100,000 - 200,000", "developer": "-", "phone": "-", "email": "-", "bts": "BTS ชิดลม", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "Tonson One Residence", "name_th": "ต้นสน วัน เรสซิเดนซ์", "district": "เขตปทุมวัน", "address": "ซอยต้นสน แขวงลุมพินี เขตปทุมวัน กรุงเทพฯ", "lat": 13.7425, "lon": 100.541, "units": 50, "room_sizes": "80-250 ตร.ม.", "sale_price": "30,000,000 - 100,000,000", "rent_price": "250,000 - 500,000", "developer": "-", "phone": "-", "email": "-", "bts": "BTS ชิดลม", "pet_policy": "อนุญาตสัตว์เลี้ยงทุกขนาด"}, {"name": "Manhattan Chidlom", "name_th": "แมนฮัตตัน ชิดลม", "district": "เขตปทุมวัน", "address": "ถนนชิดลม แขวงลุมพินี เขตปทุมวัน กรุงเทพฯ", "lat": 13.744, "lon": 100.544, "units": 100, "room_sizes": "35-80 ตร.ม.", "sale_price": "8,000,000 - 20,000,000", "rent_price": "25,000 - 55,000", "developer": "-", "phone": "-", "email": "-", "bts": "BTS ชิดลม", "pet_policy": "อนุญาตแมวและสุนัข"}, {"name": "Maestro 02 Ruamrudee", "name_th": "มาเอสโตร 02 ร่วมฤดี", "district": "เขตปทุมวัน", "address": "ซอยร่วมฤดี แขวงลุมพินี เขตปทุมวัน กรุงเทพฯ", "lat": 13.74, "lon": 100.548, "units": 80, "room_sizes": "35-70 ตร.ม.", "sale_price": "4,500,000 - 10,000,000", "rent_price": "20,000 - 40,000", "developer": "Major Development", "phone": "02-116-1111", "email": "info@mde.co.th", "bts": "BTS เพลินจิต", "pet_policy": "อนุญาตแมวและสุนัขขนาดเล็ก"}, {"name": "M Silom", "name_th": "เอ็ม สีลม", "district": "เขตบางรัก", "address": "ถนนสีลม แขวงสุริยวงศ์ เขตบางรัก กรุงเทพฯ 10500", "lat": 13.728, "lon": 100.52, "units": 200, "room_sizes": "30-80 ตร.ม.", "sale_price": "5,000,000 - 15,000,000", "rent_price": "39,000 - 80,000", "developer": "Major Development", "phone": "02-116-1111", "email": "info@mde.co.th", "bts": "BTS ช่องนนทรี", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "The Ritz-Carlton Residences Bangkok", "name_th": "เดอะ ริทซ์-คาร์ลตัน เรสซิเดนซ์ กรุงเทพฯ", "district": "เขตบางรัก", "address": "อาคารมหานคร ถนนพระราม 1 แขวงสีลม เขตบางรัก กรุงเทพฯ", "lat": 13.724, "lon": 100.528, "units": 200, "room_sizes": "80-600 ตร.ม.", "sale_price": "50,000,000 - 300,000,000", "rent_price": "450,000 - 1,500,000", "developer": "Pace Development", "phone": "02-123-4567", "email": "info@mahakhon.com", "bts": "BTS ช่องนนทรี", "pet_policy": "อนุญาตสัตว์เลี้ยง (แจ้งกรณีสัตว์ใหญ่)"}, {"name": "The Royal Saladaeng", "name_th": "เดอะ รอยัล ศาลาแดง", "district": "เขตบางรัก", "address": "ถนนศาลาแดง แขวงสีลม เขตบางรัก กรุงเทพฯ", "lat": 13.726, "lon": 100.535, "units": 80, "room_sizes": "40-120 ตร.ม.", "sale_price": "8,000,000 - 30,000,000", "rent_price": "40,000 - 120,000", "developer": "-", "phone": "-", "email": "-", "bts": "BTS ศาลาแดง / MRT สีลม", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "Tait 12", "name_th": "เทตต์ ทเวลฟ์", "district": "เขตสาทร", "address": "ซอยเซนต์หลุยส์ 2 แขวงทุ่งมหาเมฆ เขตสาทร กรุงเทพฯ 10120", "lat": 13.719, "lon": 100.535, "units": 100, "room_sizes": "45-120 ตร.ม.", "sale_price": "8,000,000 - 25,000,000", "rent_price": "40,000 - 90,000", "developer": "Sansiri", "phone": "1685", "email": "info@sansiri.com", "bts": "BTS เซนต์หลุยส์", "pet_policy": "อนุญาตสัตว์เลี้ยงทุกขนาด"}, {"name": "Four Seasons Private Residence Bangkok", "name_th": "โฟร์ซีซั่นส์ ไพรเวท เรสซิเดนซ์ กรุงเทพฯ", "district": "เขตสาทร", "address": "ริมแม่น้ำเจ้าพระยา ถนนเจริญกรุง แขวงยานนาวา เขตสาทร กรุงเทพฯ", "lat": 13.71, "lon": 100.51, "units": 200, "room_sizes": "100-500 ตร.ม.", "sale_price": "40,000,000 - 300,000,000", "rent_price": "350,000 - 800,000", "developer": "Country Group Development", "phone": "02-123-4567", "email": "info@cgd.co.th", "bts": "BTS กรุงธนบุรี", "pet_policy": "Pet-friendly (มัดจำ 3 เดือน)"}, {"name": "Collezio Sathorn-Pipat", "name_th": "คอลเลซิโอ สาทร-พิพัฒน์", "district": "เขตสาทร", "address": "ซอยพิพัฒน์ แขวงสีลม เขตบางรัก กรุงเทพฯ", "lat": 13.72, "lon": 100.53, "units": 80, "room_sizes": "30-70 ตร.ม.", "sale_price": "4,000,000 - 10,000,000", "rent_price": "35,000 - 60,000", "developer": "-", "phone": "-", "email": "-", "bts": "BTS ช่องนนทรี", "pet_policy": "อนุญาตแมวและสุนัข"}, {"name": "The Peony", "name_th": "เดอะ พิโอนี่", "district": "เขตสาทร", "address": "ถนนสาทร แขวงยานนาวา เขตสาทร กรุงเทพฯ", "lat": 13.714, "lon": 100.525, "units": 60, "room_sizes": "35-80 ตร.ม.", "sale_price": "3,500,000 - 10,000,000", "rent_price": "20,000 - 45,000", "developer": "-", "phone": "-", "email": "-", "bts": "BTS เซนต์หลุยส์", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "Maestro 01 Sathorn-Yenakat", "name_th": "มาเอสโตร 01 สาทร-เย็นอากาศ", "district": "เขตสาทร", "address": "ถนนเย็นอากาศ แขวงทุ่งมหาเมฆ เขตสาทร กรุงเทพฯ 10120", "lat": 13.7155, "lon": 100.548, "units": 100, "room_sizes": "33.56-182.18 ตร.ม.", "sale_price": "3,000,000 - 10,000,000", "rent_price": "20,000 - 45,000", "developer": "Major Development", "phone": "02-116-1111", "email": "info@mde.co.th", "bts": "MRT คลองเตย", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "M Phayathai", "name_th": "เอ็ม พญาไท", "district": "เขตพญาไท", "address": "ถนนพญาไท แขวงสามเสนใน เขตพญาไท กรุงเทพฯ 10400", "lat": 13.762, "lon": 100.539, "units": 200, "room_sizes": "30-80 ตร.ม.", "sale_price": "8,000,000 - 29,000,000", "rent_price": "25,000 - 60,000", "developer": "Major Development", "phone": "02-116-1111", "email": "info@mde.co.th", "bts": "BTS อนุสาวรีย์ชัย", "pet_policy": "อนุญาตแมวและสุนัข"}, {"name": "Marquis Phayathai", "name_th": "มาร์ควิส พญาไท", "district": "เขตพญาไท", "address": "ถนนพญาไท แขวงถนนพญาไท เขตราชเทวี กรุงเทพฯ 10400", "lat": 13.76, "lon": 100.54, "units": 180, "room_sizes": "45-150 ตร.ม.", "sale_price": "15,000,000 - 50,000,000", "rent_price": "45,000 - 120,000", "developer": "Major Development", "phone": "1266", "email": "info@mde.co.th", "bts": "BTS พญาไท", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "Conner Ratchathewi", "name_th": "คอนเนอร์ ราชเทวี", "district": "เขตราชเทวี", "address": "ถนนพญาไท แขวงถนนเพชรบุรี เขตราชเทวี กรุงเทพฯ", "lat": 13.753, "lon": 100.536, "units": 150, "room_sizes": "35-90 ตร.ม.", "sale_price": "8,000,000 - 20,000,000", "rent_price": "35,000 - 70,000", "developer": "Sansiri", "phone": "1685", "email": "info@sansiri.com", "bts": "BTS ราชเทวี", "pet_policy": "อนุญาตแมวและสุนัข"}, {"name": "Maestro 12 Ratchathewi", "name_th": "มาเอสโตร 12 ราชเทวี", "district": "เขตราชเทวี", "address": "ถนนพญาไท แขวงถนนพญาไท เขตราชเทวี กรุงเทพฯ", "lat": 13.755, "lon": 100.535, "units": 100, "room_sizes": "28-60 ตร.ม.", "sale_price": "3,500,000 - 8,000,000", "rent_price": "18,000 - 35,000", "developer": "Major Development", "phone": "02-116-1111", "email": "info@mde.co.th", "bts": "BTS ราชเทวี", "pet_policy": "อนุญาตแมวและสุนัขขนาดเล็ก"}, {"name": "Maestro 14 Siam-Ratchathewi", "name_th": "มาเอสโตร 14 สยาม-ราชเทวี", "district": "เขตราชเทวี", "address": "ถนนพญาไท แขวงถนนพญาไท เขตราชเทวี กรุงเทพฯ", "lat": 13.754, "lon": 100.537, "units": 100, "room_sizes": "28-55 ตร.ม.", "sale_price": "3,500,000 - 7,000,000", "rent_price": "18,000 - 30,000", "developer": "Major Development", "phone": "02-116-1111", "email": "info@mde.co.th", "bts": "BTS สยาม", "pet_policy": "อนุญาตแมวและสุนัข"}, {"name": "Maestro 07 Victory Monument", "name_th": "มาเอสโตร 07 อนุสาวรีย์ชัย", "district": "เขตราชเทวี", "address": "ถนนราชวิถี แขวงถนนพญาไท เขตราชเทวี กรุงเทพฯ", "lat": 13.765, "lon": 100.54, "units": 120, "room_sizes": "28-60 ตร.ม.", "sale_price": "3,500,000 - 8,000,000", "rent_price": "20,000 - 40,000", "developer": "Major Development", "phone": "02-116-1111", "email": "info@mde.co.th", "bts": "BTS อนุสาวรีย์ชัย", "pet_policy": "อนุญาตสัตว์เลี้ยงทุกขนาด"}, {"name": "Nue Epic Asok-Rama 9", "name_th": "นิว เอปิค อโศก-พระราม 9", "district": "เขตห้วยขวาง", "address": "ถนนรัชดาภิเษก แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพฯ", "lat": 13.75, "lon": 100.57, "units": 400, "room_sizes": "25-50 ตร.ม.", "sale_price": "3,500,000 - 7,000,000", "rent_price": "15,000 - 35,000", "developer": "Noble Development", "phone": "02-123-4567", "email": "info@noble.com", "bts": "MRT พระราม 9", "pet_policy": "อนุญาตแมวและสุนัขขนาดเล็ก (แจ้งล่วงหน้า)"}, {"name": "COBE Ratchada-Rama 9", "name_th": "โค้บบ์ รัชดา-พระราม 9", "district": "เขตห้วยขวาง", "address": "ถนนรัชดาภิเษก แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพฯ", "lat": 13.755, "lon": 100.575, "units": 300, "room_sizes": "25-55 ตร.ม.", "sale_price": "3,000,000 - 7,000,000", "rent_price": "13,000 - 30,000", "developer": "SC Asset", "phone": "02-123-4567", "email": "info@scasset.com", "bts": "MRT พระราม 9", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "Maestro 03 Ratchada-Rama 9", "name_th": "มาเอสโตร 03 รัชดา-พระราม 9", "district": "เขตห้วยขวาง", "address": "ถนนรัชดาภิเษก แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพฯ", "lat": 13.752, "lon": 100.572, "units": 200, "room_sizes": "28-65 ตร.ม.", "sale_price": "2,800,000 - 6,500,000", "rent_price": "15,900 - 35,000", "developer": "Major Development", "phone": "02-116-1111", "email": "info@mde.co.th", "bts": "MRT พระราม 9", "pet_policy": "ไม่เกิน 15 กก./ตัว ไม่เกิน 1-2 ตัว"}, {"name": "Maestro 19 Ratchada 19", "name_th": "มาเอสโตร 19 รัชดา 19", "district": "เขตห้วยขวาง", "address": "ซอยรัชดา 19 แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพฯ", "lat": 13.758, "lon": 100.573, "units": 150, "room_sizes": "28-55 ตร.ม.", "sale_price": "2,500,000 - 5,500,000", "rent_price": "15,000 - 28,000", "developer": "Major Development", "phone": "02-116-1111", "email": "info@mde.co.th", "bts": "MRT รัชดาภิเษก", "pet_policy": "อนุญาตแมวและสุนัขขนาดเล็ก"}, {"name": "The Base Ratchada 19", "name_th": "เดอะ เบส รัชดา 19", "district": "เขตห้วยขวาง", "address": "ซอยรัชดา 19 แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพฯ", "lat": 13.757, "lon": 100.574, "units": 200, "room_sizes": "23.25-35.25 ตร.ม.", "sale_price": "2,490,000 - 4,500,000", "rent_price": "10,000 - 22,000", "developer": "Sansiri", "phone": "1685", "email": "info@sansiri.com", "bts": "MRT รัชดาภิเษก", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "Cybiq Rama 9", "name_th": "ไซบิค พระราม 9", "district": "เขตห้วยขวาง", "address": "ถนนพระราม 9 แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพฯ", "lat": 13.748, "lon": 100.565, "units": 180, "room_sizes": "25-50 ตร.ม.", "sale_price": "2,500,000 - 5,000,000", "rent_price": "13,000 - 25,000", "developer": "Ananda", "phone": "02-123-4567", "email": "info@ananda.co.th", "bts": "MRT พระราม 9", "pet_policy": "Pet-friendly"}, {"name": "Rise Rama 9", "name_th": "ไรซ์ พระราม 9", "district": "เขตห้วยขวาง", "address": "ถนนพระราม 9 แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพฯ", "lat": 13.749, "lon": 100.567, "units": 250, "room_sizes": "22-45 ตร.ม.", "sale_price": "1,800,000 - 4,000,000", "rent_price": "9,000 - 20,000", "developer": "AP Thailand", "phone": "02-123-4567", "email": "info@apthai.com", "bts": "MRT พระราม 9", "pet_policy": "อนุญาตแมวและสุนัข"}, {"name": "The Base Ratchada 19", "name_th": "เดอะ เบส รัชดา 19", "district": "เขตดินแดง", "address": "ถนนรัชดาภิเษก แขวงดินแดง เขตดินแดง กรุงเทพฯ", "lat": 13.759, "lon": 100.573, "units": 200, "room_sizes": "23.25-35.25 ตร.ม.", "sale_price": "2,490,000 - 4,500,000", "rent_price": "10,000 - 22,000", "developer": "Sansiri", "phone": "1685", "email": "info@sansiri.com", "bts": "MRT รัชดาภิเษก", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "M Jatujak", "name_th": "เอ็ม จตุจักร", "district": "เขตจตุจักร", "address": "ถนนพหลโยธิน แขวงจตุจักร เขตจตุจักร กรุงเทพฯ 10900", "lat": 13.815, "lon": 100.562, "units": 800, "room_sizes": "30-80 ตร.ม.", "sale_price": "3,400,000 - 10,000,000", "rent_price": "20,000 - 45,000", "developer": "Major Development", "phone": "02-116-1111", "email": "info@mde.co.th", "bts": "BTS หมอชิต / MRT จตุจักร", "pet_policy": "ไม่เกิน 15 กก. ต่อ 50 ตร.ม."}, {"name": "Equinox Phahol-Vipha", "name_th": "อิควินอกซ์ พหล-วิภา", "district": "เขตจตุจักร", "address": "ถนนพหลโยธิน แขวงจตุจักร เขตจตุจักร กรุงเทพฯ", "lat": 13.812, "lon": 100.558, "units": 150, "room_sizes": "30-65 ตร.ม.", "sale_price": "4,000,000 - 10,000,000", "rent_price": "25,000 - 50,000", "developer": "-", "phone": "-", "email": "-", "bts": "BTS หมอชิต", "pet_policy": "อนุญาตแมวและสุนัขขนาดเล็ก"}, {"name": "M Ladprao", "name_th": "เอ็ม ลาดพร้าว", "district": "เขตจตุจักร", "address": "ถนนลาดพร้าว แขวงจอมพล เขตจตุจักร กรุงเทพฯ", "lat": 13.8, "lon": 100.56, "units": 300, "room_sizes": "28-60 ตร.ม.", "sale_price": "3,500,000 - 8,000,000", "rent_price": "20,000 - 40,000", "developer": "Major Development", "phone": "02-116-1111", "email": "info@mde.co.th", "bts": "MRT พหลโยธิน", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "Metris District Ladprao", "name_th": "เมทริส ดิสทริค ลาดพร้าว", "district": "เขตจตุจักร", "address": "ถนนลาดพร้าว แขวงจอมพล เขตจตุจักร กรุงเทพฯ 10900", "lat": 13.802, "lon": 100.562, "units": 600, "room_sizes": "23.7-49.6 ตร.ม.", "sale_price": "4,450,000 - 8,000,000", "rent_price": "20,000 - 45,000", "developer": "Major Development", "phone": "02-116-1111", "email": "info@mde.co.th", "bts": "MRT พหลโยธิน", "pet_policy": "อนุญาตสัตว์เลี้ยงทุกชนิด (รวม Exotic Pet)"}, {"name": "Maru Ladprao 15", "name_th": "มารุ ลาดพร้าว 15", "district": "เขตลาดพร้าว", "address": "ซอยลาดพร้าว 15 แขวงจอมพล เขตจตุจักร กรุงเทพฯ", "lat": 13.798, "lon": 100.555, "units": 300, "room_sizes": "28-65 ตร.ม.", "sale_price": "5,300,000 - 12,000,000", "rent_price": "18,000 - 40,000", "developer": "Major Development", "phone": "02-116-1111", "email": "info@mde.co.th", "bts": "MRT ลาดพร้าว", "pet_policy": "ไม่เกิน 20 กก./ตัว ห้องละไม่เกิน 2 ตัว"}, {"name": "Chewathai Hallmark Ladprao", "name_th": "ชีวาทัย ฮอลล์มาร์ค ลาดพร้าว", "district": "เขตลาดพร้าว", "address": "ซอยโชคชัย 4 แขวงลาดพร้าว เขตลาดพร้าว กรุงเทพฯ", "lat": 13.78, "lon": 100.57, "units": 250, "room_sizes": "25-50 ตร.ม.", "sale_price": "2,000,000 - 4,000,000", "rent_price": "8,000 - 18,000", "developer": "Chewathai", "phone": "02-123-4567", "email": "info@chewathai.com", "bts": "MRT โชคชัย 4 (สายเหลือง)", "pet_policy": "อนุญาตแมวและสุนัขขนาดเล็ก (แจ้งล่วงหน้า)"}, {"name": "Happy Condo Ladprao 101", "name_th": "แฮปปี้ คอนโด ลาดพร้าว 101", "district": "เขตลาดพร้าว", "address": "ซอยลาดพร้าว 101 แขวงคลองจั่น เขตบางกะปิ กรุงเทพฯ", "lat": 13.77, "lon": 100.6, "units": 200, "room_sizes": "25-50 ตร.ม.", "sale_price": "2,300,000 - 4,500,000", "rent_price": "8,500 - 18,000", "developer": "Infinite Real Estate", "phone": "02-123-4567", "email": "info@infinite.co.th", "bts": "MRT ลาดพร้าว 101 (สายเหลือง)", "pet_policy": "อนุญาตแมวและสุนัข"}, {"name": "Freeisland Ladprao 93", "name_th": "ฟรีไอส์แลนด์ ลาดพร้าว 93", "district": "เขตลาดพร้าว", "address": "ซอยลาดพร้าว 93 แขวงคลองเจ้าคุณสิงห์ เขตวังทองหลาง กรุงเทพฯ", "lat": 13.775, "lon": 100.59, "units": 150, "room_sizes": "22-45 ตร.ม.", "sale_price": "1,800,000 - 3,500,000", "rent_price": "9,000 - 18,000", "developer": "-", "phone": "-", "email": "-", "bts": "MRT มหาดไทย (สายเหลือง)", "pet_policy": "อนุญาตแมวและสุนัขขนาดเล็ก"}, {"name": "Brixton Pet & Play Sukhumvit 107", "name_th": "บริกซ์ตัน เพ็ทแอนด์เพลย์ สุขุมวิท 107", "district": "เขตบางนา", "address": "ถนนสุขุมวิท 107 แขวงบางนา เขตบางนา กรุงเทพฯ", "lat": 13.65674, "lon": 100.60217, "units": 237, "room_sizes": "26.72-30.12 ตร.ม.", "sale_price": "2,050,000 - 2,890,000", "rent_price": "11,500 - 16,000", "developer": "Origin Property", "phone": "1498", "email": "info@origin.co.th", "bts": "BTS แบริ่ง", "pet_policy": "ออกแบบเพื่อสัตว์เลี้ยงโดยเฉพาะ"}, {"name": "The Muve Sukhumvit 107", "name_th": "เดอะ มูฟ สุขุมวิท 107", "district": "เขตบางนา", "address": "ถนนสุขุมวิท 107 แขวงบางนา เขตบางนา กรุงเทพฯ", "lat": 13.657, "lon": 100.603, "units": 200, "room_sizes": "25-35 ตร.ม.", "sale_price": "2,000,000 - 3,500,000", "rent_price": "12,000 - 18,000", "developer": "Sansiri", "phone": "1685", "email": "info@sansiri.com", "bts": "BTS แบริ่ง", "pet_policy": "อนุญาตสัตว์เลี้ยง, มีโซนสัตว์เลี้ยง"}, {"name": "Arlo Lasalle", "name_th": "อาโล ลาซาล", "district": "เขตบางนา", "address": "ถนนลาซาล แขวงบางนา เขตบางนา กรุงเทพฯ", "lat": 13.665, "lon": 100.61, "units": 180, "room_sizes": "22-40 ตร.ม.", "sale_price": "1,800,000 - 3,500,000", "rent_price": "12,000 - 20,000", "developer": "Ananda", "phone": "02-123-4567", "email": "info@ananda.co.th", "bts": "BTS ลาซาล", "pet_policy": "อนุญาตแมวและสุนัขขนาดเล็ก, มีสวนสัตว์เลี้ยง"}, {"name": "Swift Condo Abac Bangna", "name_th": "สวิฟท์ คอนโด เอแบค บางนา", "district": "เขตบางนา", "address": "ถนนบางนา-ตราด แขวงบางนา เขตบางนา กรุงเทพฯ", "lat": 13.66, "lon": 100.63, "units": 150, "room_sizes": "22-40 ตร.ม.", "sale_price": "1,500,000 - 3,000,000", "rent_price": "7,500 - 15,000", "developer": "-", "phone": "-", "email": "-", "bts": "BTS สถานีบางนา", "pet_policy": "อนุญาตแมวและสุนัข"}, {"name": "Click Condo Sukhumvit 65", "name_th": "คลิก คอนโด สุขุมวิท 65", "district": "เขตพระโขนง", "address": "ซอยสุขุมวิท 65 แขวงพระโขนงเหนือ เขตวัฒนา กรุงเทพฯ", "lat": 13.715, "lon": 100.595, "units": 150, "room_sizes": "24-45 ตร.ม.", "sale_price": "2,500,000 - 5,000,000", "rent_price": "18,000 - 30,000", "developer": "-", "phone": "-", "email": "-", "bts": "BTS พระโขนง", "pet_policy": "อนุญาตแมวและสุนัขเล็ก"}, {"name": "Seven Place Residences", "name_th": "เซเว่น เพลส เรสซิเดนซ์", "district": "เขตพระโขนง", "address": "ซอยสุขุมวิท 44 แขวงพระโขนง เขตคลองเตย กรุงเทพฯ", "lat": 13.714, "lon": 100.587, "units": 80, "room_sizes": "40-100 ตร.ม.", "sale_price": "6,000,000 - 15,000,000", "rent_price": "30,000 - 65,000", "developer": "-", "phone": "-", "email": "-", "bts": "BTS พระโขนง", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "The Origin Bangkae", "name_th": "ดิ ออริจิ้น บางแค", "district": "เขตบางแค", "address": "ถนนเพชรเกษม แขวงบางแค เขตบางแค กรุงเทพฯ", "lat": 13.695, "lon": 100.4, "units": 200, "room_sizes": "24-50 ตร.ม.", "sale_price": "1,500,000 - 3,500,000", "rent_price": "8,000 - 18,000", "developer": "Origin Property", "phone": "1498", "email": "info@origin.co.th", "bts": "MRT หลักสอง", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "The MUVE Paw Bangkhae", "name_th": "เดอะ มูฟ พอว์ บางแค", "district": "เขตบางแค", "address": "ถนนเพชรเกษม แขวงบางแค เขตบางแค กรุงเทพฯ", "lat": 13.696, "lon": 100.405, "units": 250, "room_sizes": "24-35.25 ตร.ม.", "sale_price": "1,490,000 - 3,500,000", "rent_price": "9,500 - 18,000", "developer": "Sansiri", "phone": "1685", "email": "info@sansiri.com", "bts": "MRT หลักสอง", "pet_policy": "Pet-friendly มี Pet Park"}, {"name": "The Base Wongsawang", "name_th": "เดอะ เบส วงศ์สว่าง", "district": "เขตบางซื่อ", "address": "ถนนวงศ์สว่าง แขวงบางซื่อ เขตบางซื่อ กรุงเทพฯ", "lat": 13.815, "lon": 100.53, "units": 300, "room_sizes": "25.75-46 ตร.ม.", "sale_price": "2,390,000 - 5,000,000", "rent_price": "10,000 - 22,000", "developer": "Sansiri", "phone": "1685", "email": "info@sansiri.com", "bts": "MRT วงศ์สว่าง", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "Nue Riverest Ratburana", "name_th": "นิว ริเวอร์เรสต์ ราษฎร์บูรณะ", "district": "เขตราษฎร์บูรณะ", "address": "ถนนสุขสวัสดิ์ แขวงราษฎร์บูรณะ เขตราษฎร์บูรณะ กรุงเทพฯ", "lat": 13.68, "lon": 100.51, "units": 400, "room_sizes": "25-55 ตร.ม.", "sale_price": "2,000,000 - 5,000,000", "rent_price": "9,000 - 20,000", "developer": "Noble Development", "phone": "02-123-4567", "email": "info@noble.com", "bts": "-", "pet_policy": "ตึกพิเศษ Pet Allowed Tower"}, {"name": "The Key Rama 3-Suksawat", "name_th": "เดอะ คีย์ พระราม 3-สุขสวัสดิ์", "district": "เขตราษฎร์บูรณะ", "address": "ถนนสุขสวัสดิ์ แขวงราษฎร์บูรณะ เขตราษฎร์บูรณะ กรุงเทพฯ", "lat": 13.685, "lon": 100.515, "units": 300, "room_sizes": "22.85-64.85 ตร.ม.", "sale_price": "1,790,000 - 4,500,000", "rent_price": "8,000 - 18,000", "developer": "Sansiri", "phone": "1685", "email": "info@sansiri.com", "bts": "-", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "Chapter One Spark Charan", "name_th": "แชปเตอร์ วัน สปาร์ค จรัญ", "district": "เขตบางพลัด", "address": "ถนนจรัญสนิทวงศ์ แขวงบางพลัด เขตบางพลัด กรุงเทพฯ", "lat": 13.78, "lon": 100.5, "units": 500, "room_sizes": "25-50 ตร.ม.", "sale_price": "2,000,000 - 4,500,000", "rent_price": "10,000 - 22,000", "developer": "Pruksa", "phone": "02-123-4567", "email": "info@pruksa.com", "bts": "MRT บางพลัด", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "Origin Place Chaengwattana", "name_th": "ออริจิ้น เพลส แจ้งวัฒนะ", "district": "เขตหลักสี่", "address": "ถนนแจ้งวัฒนะ แขวงทุ่งสองห้อง เขตหลักสี่ กรุงเทพฯ", "lat": 13.885, "lon": 100.565, "units": 200, "room_sizes": "22-63 ตร.ม.", "sale_price": "1,800,000 - 4,000,000", "rent_price": "8,500 - 18,000", "developer": "Origin Property", "phone": "1498", "email": "info@origin.co.th", "bts": "MRT สายสีชมพู", "pet_policy": "Pet-friendly, ห้อง Duo Space"}, {"name": "Supalai Sense Chaengwattana-Laksi", "name_th": "ศุภาลัย เซนส์ แจ้งวัฒนะ-หลักสี่", "district": "เขตหลักสี่", "address": "ถนนแจ้งวัฒนะ แขวงทุ่งสองห้อง เขตหลักสี่ กรุงเทพฯ", "lat": 13.883, "lon": 100.563, "units": 300, "room_sizes": "25-55 ตร.ม.", "sale_price": "1,650,000 - 4,000,000", "rent_price": "8,000 - 18,000", "developer": "Supalai", "phone": "02-123-4567", "email": "info@supalai.com", "bts": "SRT หลักสี่ / MRT สายสีชมพู", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "COZI Raminthra-Khubon", "name_th": "โคซี่ รามอินทรา-คู้บอน", "district": "เขตสะพานสูง", "address": "ถนนรามอินทรา แขวงสะพานสูง เขตสะพานสูง กรุงเทพฯ", "lat": 13.78, "lon": 100.68, "units": 250, "room_sizes": "24-45 ตร.ม.", "sale_price": "1,500,000 - 3,500,000", "rent_price": "7,000 - 15,000", "developer": "SC Asset", "phone": "02-123-4567", "email": "info@scasset.com", "bts": "-", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "Landmark @Grand Station", "name_th": "แลนด์มาร์ค แอท แกรนด์ สเตชั่น", "district": "เขตสะพานสูง", "address": "ถนนรามอินทรา แขวงสะพานสูง เขตสะพานสูง กรุงเทพฯ", "lat": 13.785, "lon": 100.685, "units": 988, "room_sizes": "38.50-50 ตร.ม.", "sale_price": "1,980,000 - 4,500,000", "rent_price": "30,000 - 50,000", "developer": "Siamis Asset", "phone": "02-123-4567", "email": "info@siamis.com", "bts": "MRT สายสีชมพู (วงแหวนรามอินทรา)", "pet_policy": "มีห้อง Pet Lover แยกชั้น 4-5"}, {"name": "Origin Plug & Play Ramintra", "name_th": "ออริจิ้น ปลั๊ก แอนด์ เพลย์ รามอินทรา", "district": "เขตคันนายาว", "address": "ถนนรามอินทรา แขวงคันนายาว เขตคันนายาว กรุงเทพฯ", "lat": 13.8, "lon": 100.66, "units": 300, "room_sizes": "22-45 ตร.ม.", "sale_price": "2,790,000 - 5,000,000", "rent_price": "9,500 - 18,000", "developer": "Origin Property", "phone": "1498", "email": "info@origin.co.th", "bts": "MRT สายสีชมพู (รามอินทรา กม.9)", "pet_policy": "อนุญาตสัตว์เลี้ยง, Duo Space"}, {"name": "Noble Create", "name_th": "โนเบิล ครีเอท", "district": "เขตคันนายาว", "address": "ถนนรามอินทรา แขวงคันนายาว เขตคันนายาว กรุงเทพฯ", "lat": 13.795, "lon": 100.67, "units": 1250, "room_sizes": "25-60 ตร.ม.", "sale_price": "2,390,000 - 6,000,000", "rent_price": "10,000 - 25,000", "developer": "Noble Development", "phone": "02-123-4567", "email": "info@noble.com", "bts": "-", "pet_policy": "Tower F Pet Friendly, มี Pet Park"}, {"name": "Chateau In Town Kaset Campus", "name_th": "ชาโตว์ อินทาวน์ เกษตร แคมปัส", "district": "เขตบางกะปิ", "address": "ถนนพหลโยธิน แขวงคลองจั่น เขตบางกะปิ กรุงเทพฯ", "lat": 13.808, "lon": 100.578, "units": 180, "room_sizes": "22-45 ตร.ม.", "sale_price": "1,500,000 - 3,000,000", "rent_price": "7,000 - 15,000", "developer": "LPN Development", "phone": "02-123-4567", "email": "info@lpn.co.th", "bts": "BTS เกษตร", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "Metris Pattanakarn", "name_th": "เมทริส พัฒนาการ", "district": "เขตประเวศ", "address": "ซอยพัฒนาการ 12 แขวงสวนหลวง เขตสวนหลวง กรุงเทพฯ 10250", "lat": 13.73, "lon": 100.62, "units": 300, "room_sizes": "29.8-61.9 ตร.ม.", "sale_price": "3,000,000 - 7,000,000", "rent_price": "15,000 - 35,000", "developer": "Major Development", "phone": "02-116-1111", "email": "info@mde.co.th", "bts": "ARL รามคำแหง", "pet_policy": "อนุญาตแมวและสุนัข"}, {"name": "Muniq Charoenkrung", "name_th": "มิวนีค เจริญกรุง", "district": "เขตบางคอแหลม", "address": "1957 ถนนเจริญกรุง แขวงวัดพระยาไกร เขตบางคอแหลม กรุงเทพฯ 10120", "lat": 13.7, "lon": 100.51, "units": 168, "room_sizes": "92 ตร.ม.", "sale_price": "12,000,000 - 30,000,000", "rent_price": "45,000 - 100,000", "developer": "Major Development", "phone": "1266", "email": "info@mde.co.th", "bts": "BTS เจริญกรุง", "pet_policy": "อนุญาตสัตว์เลี้ยง"}, {"name": "BRIXTON Pet & Play Phaholyothin 50", "name_th": "บริกซ์ตัน เพ็ทแอนด์เพลย์ พหลโยธิน 50", "district": "เขตสายไหม", "address": "ถนนพหลโยธิน 50 แขวงสายไหม เขตสายไหม กรุงเทพฯ", "lat": 13.89, "lon": 100.61, "units": 200, "room_sizes": "25-35 ตร.ม.", "sale_price": "1,800,000 - 3,000,000", "rent_price": "10,000 - 16,000", "developer": "Origin Property", "phone": "1498", "email": "info@origin.co.th", "bts": "BTS สายหยุด", "pet_policy": "ออกแบบเพื่อสัตว์เลี้ยงโดยเฉพาะ"},
+    {
+        "name": "Modiz Vault Kaset-Sripatum",
+        "name_th": "โมดิซ วอลท์ เกษตร-ศรีปทุม",
+        "district": "เขตจตุจักร",
+        "address": "ซ. พหลโยธิน 49/1 แขวงลาดยาว เขตจตุจักร กรุงเทพฯ 10900",
+        "lat": 13.857375,
+        "lon": 100.580815,
+        "units": 787,
+        "room_sizes": "22-35.5 ตร.ม.",
+        "sale_price": "2,290,000 - 4,500,000",
+        "rent_price": "8,000 - 18,000",
+        "developer": "AssetWise (ASW)",
+        "phone": "02-168-0000",
+        "email": "info@assetwise.co.th",
+        "bts": "BTS บางบัว",
+        "pet_policy": "อาคาร B Pet Friendly แยกต่างหาก, มีห้อง Pet Friendly, Pet Play House"
+    }];
+
+let allCondos = CONDO_DATA;
+let userListings = [];
+
+// District data
+const DISTRICTS = [
+  "เขตพระนคร","เขตดุสิต","เขตหนองจอก","เขตบางรัก","เขตบางเขน",
+  "เขตบางกะปิ","เขตปทุมวัน","เขตป้อมปราบศัตรูพ่าย","เขตพระโขนง","เขตมีนบุรี",
+  "เขตลาดกระบัง","เขตยานนาวา","เขตสัมพันธวงศ์","เขตพญาไท","เขตธนบุรี",
+  "เขตบางกอกใหญ่","เขตห้วยขวาง","เขตคลองสาน","เขตตลิ่งชัน","เขตบางกอกน้อย",
+  "เขตบางขุนเทียน","เขตภาษีเจริญ","เขตหนองแขม","เขตราษฎร์บูรณะ","เขตบางพลัด",
+  "เขตดินแดง","เขตบึงกุ่ม","เขตสาทร","เขตบางซื่อ","เขตจตุจักร",
+  "เขตบางคอแหลม","เขตประเวศ","เขตคลองเตย","เขตสวนหลวง","เขตจอมทอง",
+  "เขตดอนเมือง","เขตราชเทวี","เขตลาดพร้าว","เขตวัฒนา","เขตบางแค",
+  "เขตหลักสี่","เขตสายไหม","เขตคันนายาว","เขตสะพานสูง","เขตวังทองหลาง",
+  "เขตคลองสามวา","เขตบางนา","เขตทวีวัฒนา","เขตทุ่งครุ","เขตบางบอน"
+];
+
+// ====== LOAD DATA ======
+function loadData() {
+  init();
+}
+
+// ====== INIT ======
+function init() {
+  // Populate district filter
+  const districts = [...new Set(allCondos.map(c => c.district))].sort();
+  const sel = document.getElementById('filterDistrict');
+  districts.forEach(d => {
+    const opt = document.createElement('option');
+    opt.value = d;
+    opt.textContent = d;
+    sel.appendChild(opt);
+  });
+
+  // Populate project datalist
+  const datalist = document.getElementById('projectList');
+  allCondos.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c.name + (c.name_th ? ' (' + c.name_th + ')' : '');
+    datalist.appendChild(opt);
+  });
+
+  // Load user listings from localStorage
+  loadListings();
+
+  // Render
+  filterCondos();
+}
+
+// ====== FILTER ======
+function filterCondos() {
+  const search = document.getElementById('searchText').value.toLowerCase();
+  const district = document.getElementById('filterDistrict').value;
+  const rentRange = document.getElementById('filterRent').value;
+  const saleRange = document.getElementById('filterSale').value;
+  const btsFilter = document.getElementById('filterBTS').value;
+
+  let filtered = allCondos.filter(c => {
+    // Search
+    if (search) {
+      const searchable = (c.name + ' ' + c.name_th + ' ' + c.address + ' ' + c.bts + ' ' + c.district).toLowerCase();
+      if (!searchable.includes(search)) return false;
+    }
+    // District
+    if (district && c.district !== district) return false;
+    // Rent range
+    if (rentRange) {
+      const r = getRentRange(c.rent_price);
+      if (r !== rentRange) return false;
+    }
+    // Sale range
+    if (saleRange) {
+      const s = getSaleRange(c.sale_price);
+      if (s !== saleRange) return false;
+    }
+    // BTS
+    if (btsFilter && c.bts && !c.bts.includes(btsFilter)) return false;
+    return true;
+  });
+
+  renderCondos(filtered);
+}
+
+function getRentRange(price) {
+  if (!price) return null;
+  const n = parseInt(price.replace(/,/g,''));
+  if (n < 10000) return '<10K';
+  if (n < 20000) return '10K-20K';
+  if (n < 50000) return '20K-50K';
+  if (n < 100000) return '50K-100K';
+  return '>100K';
+}
+
+function getSaleRange(price) {
+  if (!price) return null;
+  const n = parseInt(price.replace(/,/g,''));
+  if (n < 2000000) return '<2M';
+  if (n < 5000000) return '2M-5M';
+  if (n < 10000000) return '5M-10M';
+  if (n < 20000000) return '10M-20M';
+  return '>20M';
+}
+
+function getPriceClass(price, type) {
+  const n = parseInt(String(price).replace(/,/g,''));
+  if (!n) return '';
+  if (type === 'rent') {
+    if (n < 15000) return 'price-low';
+    if (n < 50000) return '';
+    return 'price-high';
+  }
+  if (n < 3000000) return 'price-low';
+  if (n < 10000000) return '';
+  return 'price-high';
+}
+
+// ====== RENDER ======
+function renderCondos(condos) {
+  const container = document.getElementById('condoList');
+  const empty = document.getElementById('emptyState');
+  document.getElementById('resultCount').textContent = condos.length;
+  document.getElementById('districtCount').textContent = new Set(condos.map(c => c.district)).size;
+
+  if (condos.length === 0) {
+    container.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  container.innerHTML = condos.map(c => {
+    const rentRange = getRentRange(c.rent_price);
+    const saleRange = getSaleRange(c.sale_price);
+    return `
+      <div class="condo-card">
+        <div class="card-header">
+          <h3>${c.name}</h3>
+          <div class="name-th">${c.name_th}</div>
+          <span class="badge">${c.district.replace('เขต','')}</span>
+        </div>
+        <div class="card-body">
+          ${c.bts ? `<div class="info-row"><span class="label">🚈 ${c.bts.includes('BTS')?'BTS':'MRT'}</span><span class="value">${c.bts}</span></div>` : ''}
+          ${c.address ? `<div class="info-row"><span class="label">📍 ที่อยู่</span><span class="value">${c.address}</span></div>` : ''}
+          ${c.room_sizes ? `<div class="info-row"><span class="label">📐 ขนาด</span><span class="value">${c.room_sizes}</span></div>` : ''}
+          ${c.units ? `<div class="info-row"><span class="label">🏗️ ยูนิต</span><span class="value">${c.units.toLocaleString()} ยูนิต</span></div>` : ''}
+          <div class="info-row">
+            <span class="label">💰 ราคา</span>
+            <span class="value">
+              ${c.rent_price ? `<span class="price-tag price-rent">เช่า ${c.rent_price}/เดือน</span>` : ''}
+              ${c.sale_price ? `<span class="price-tag price-sale">ขาย ${c.sale_price}</span>` : ''}
+            </span>
+          </div>
+          ${c.developer ? `<div class="info-row"><span class="label">🏢 Developer</span><span class="value">${c.developer}</span></div>` : ''}
+          ${c.pet_policy ? `<div class="info-row"><span class="label">🐕 นโยบาย</span><span class="value"><span class="pet-badge">${c.pet_policy}</span></span></div>` : ''}
+          ${c.phone ? `<div class="info-row"><span class="label">📞 โทร</span><span class="value">${c.phone}</span></div>` : ''}
+        </div>
+        <div class="card-actions">
+          <button class="btn-share" onclick="openShare('${c.name}','${c.name_th}','${c.bts||''}')">📤 แชร์</button>
+          ${c.phone ? `<button class="btn-contact" onclick="window.location.href='tel:${c.phone}'">📞 โทร</button>` : ''}
+          ${c.lat && c.lon ? `<button class="btn-map" onclick="window.open('https://www.google.com/maps?q=${c.lat},${c.lon}','_blank')">🗺️ แผนที่</button>` : ''}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ====== TABS ======
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.querySelector(`.tab-btn[onclick*="${tab}"]`).classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
+  if (tab === 'listings') renderUserListings();
+}
+
+// ====== SHARE ======
+let shareData = { name: '', name_th: '', bts: '' };
+function openShare(name, name_th, bts) {
+  shareData = { name, name_th, bts };
+  document.getElementById('shareTitle').textContent = `${name} ${name_th ? '('+name_th+')' : ''}`;
+  const url = window.location.href.split('?')[0] + '?share=' + encodeURIComponent(name);
+  document.getElementById('shareUrl').value = url;
+  document.getElementById('shareModal').classList.add('active');
+}
+
+function closeShare() { document.getElementById('shareModal').classList.remove('active'); }
+
+function shareFB() {
+  const url = document.getElementById('shareUrl').value;
+  window.open('https://facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url), '_blank', 'width=600,height=400');
+}
+
+function shareLine() {
+  const text = `🐾 คอนโด Pet Friendly: ${shareData.name} ${shareData.name_th ? '('+shareData.name_th+')' : ''}`;
+  window.open('https://social-plugins.line.me/lineit/share?text=' + encodeURIComponent(text), '_blank', 'width=600,height=500');
+}
+
+function shareTwitter() {
+  const text = `🐾 คอนโด Pet Friendly: ${shareData.name} - ${shareData.bts}`;
+  const url = document.getElementById('shareUrl').value;
+  window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) + '&url=' + encodeURIComponent(url), '_blank', 'width=600,height=400');
+}
+
+function shareCopy() {
+  const url = document.getElementById('shareUrl').value;
+  navigator.clipboard.writeText(url).then(() => {
+    showToast('✅ คัดลอกลิงก์แล้ว!');
+    closeShare();
+  }).catch(() => {
+    document.getElementById('shareUrl').select();
+    document.execCommand('copy');
+    showToast('✅ คัดลอกลิงก์แล้ว!');
+    closeShare();
+  });
+}
+
+// ====== LISTING SYSTEM ======
+function loadListings() {
+  try {
+    const data = localStorage.getItem('condo_pet_listings');
+    userListings = data ? JSON.parse(data) : [];
+  } catch(e) { userListings = []; }
+}
+
+function saveListings() {
+  localStorage.setItem('condo_pet_listings', JSON.stringify(userListings));
+}
+
+function submitListing() {
+  const project = document.getElementById('postProject').value.trim();
+  const type = document.getElementById('postType').value;
+  const price = document.getElementById('postPrice').value;
+  const size = document.getElementById('postSize').value;
+  const bed = document.getElementById('postBed').value;
+  const phone = document.getElementById('postPhone').value.trim();
+  const contact = document.getElementById('postContact').value.trim();
+  const desc = document.getElementById('postDesc').value.trim();
+  const image = document.getElementById('postImage').value.trim();
+
+  if (!project) { showToast('⚠️ กรุณากรอกชื่อโครงการ'); return; }
+  if (!price) { showToast('⚠️ กรุณากรอกราคา'); return; }
+  if (!phone) { showToast('⚠️ กรุณากรอกเบอร์โทรติดต่อ'); return; }
+
+  const listing = {
+    id: Date.now(),
+    project,
+    type,
+    price: parseInt(price),
+    size: size ? parseInt(size) : null,
+    bed,
+    phone,
+    contact,
+    desc,
+    image,
+    createdAt: new Date().toISOString()
+  };
+
+  userListings.unshift(listing);
+  saveListings();
+
+  // Clear form
+  document.getElementById('postProject').value = '';
+  document.getElementById('postPrice').value = '';
+  document.getElementById('postSize').value = '';
+  document.getElementById('postPhone').value = '';
+  document.getElementById('postContact').value = '';
+  document.getElementById('postDesc').value = '';
+  document.getElementById('postImage').value = '';
+
+  showToast('✅ โพสต์ประกาศสำเร็จ!');
+  renderUserListings();
+  switchTab('listings');
+}
+
+function deleteListing(id) {
+  if (!confirm('ลบประกาศนี้?')) return;
+  userListings = userListings.filter(l => l.id !== id);
+  saveListings();
+  renderUserListings();
+  showToast('🗑️ ลบประกาศแล้ว');
+}
+
+function renderUserListings() {
+  const container = document.getElementById('userListings');
+  const noListings = document.getElementById('noListings');
+  document.getElementById('listingCount').textContent = `(${userListings.length} รายการ)`;
+
+  if (userListings.length === 0) {
+    container.innerHTML = '';
+    noListings.style.display = 'block';
+    return;
+  }
+  noListings.style.display = 'none';
+
+  container.innerHTML = userListings.map(l => `
+    <div class="listing-card">
+      <h4>${l.project} <span class="tag-posted">${l.type === 'rent' ? 'ให้เช่า' : 'ขาย'}</span></h4>
+      <div class="meta">
+        <span>💰 ${l.price.toLocaleString()} บาท${l.type === 'rent' ? '/เดือน' : ''}</span>
+        ${l.size ? `<span>📐 ${l.size} ตร.ม.</span>` : ''}
+        <span>🛏️ ${l.bed}</span>
+        ${l.phone ? `<span>📞 ${l.phone}</span>` : ''}
+      </div>
+      ${l.desc ? `<div class="desc">${l.desc}</div>` : ''}
+      <div style="margin-top:10px;display:flex;gap:8px;">
+        ${l.phone ? `<button class="btn-contact" onclick="window.location.href='tel:${l.phone}'">📞 โทร</button>` : ''}
+        <button class="delete-btn" onclick="deleteListing(${l.id})">🗑️ ลบ</button>
+      </div>
+      <div style="font-size:11px;color:#aaa;margin-top:8px;">โพสต์เมื่อ ${new Date(l.createdAt).toLocaleDateString('th-TH')}</div>
+    </div>
+  `).join('');
+}
+
+// ====== TOAST ======
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ====== INIT ON LOAD ======
+loadData();
+</script>
+</body>
+</html>
