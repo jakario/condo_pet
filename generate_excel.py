@@ -18,7 +18,7 @@ DISTRICTS_TH = [
     "เขตบางคอแหลม", "เขตประเวศ", "เขตคลองเตย", "เขตสวนหลวง", "เขตจอมทอง",
     "เขตดอนเมือง", "เขตราชเทวี", "เขตลาดพร้าว", "เขตวัฒนา", "เขตบางแค",
     "เขตหลักสี่", "เขตสายไหม", "เขตคันนายาว", "เขตสะพานสูง", "เขตวังทองหลาง",
-    "เขตคลองสามวา", "เขตบางนา", "เขตทวีวัฒนา", "เขตทุ่งครุ", "เขตบางบอน"
+    "เขตคลองสามวา", "เขตบางนา", "เขตทวีวัฒนา", "เขตทุ่งครุ", "เขตบางบอน", "เขตพระประแดง"
 ]
 
 DISTRICTS_EN = [
@@ -31,7 +31,7 @@ DISTRICTS_EN = [
     "Bang Kho Laem", "Prawet", "Khlong Toei", "Suan Luang", "Chom Thong",
     "Don Mueang", "Ratchathewi", "Lat Phrao", "Watthana", "Bang Khae",
     "Lak Si", "Sai Mai", "Khan Na Yao", "Saphan Sung", "Wang Thonglang",
-    "Khlong Sam Wa", "Bang Na", "Thawi Watthana", "Thung Khru", "Bang Bon"
+    "Khlong Sam Wa", "Bang Na", "Thawi Watthana", "Thung Khru", "Bang Bon", "Phra Pradaeng"
 ]
 
 # Group district index by zone
@@ -399,6 +399,102 @@ condos = [
         "bts": "BTS พร้อมพงษ์",
         "pet_policy": "อนุญาตแมวและสุนัขขนาดเล็ก"
     },
+    {
+        "name": "Scope Thonglor",
+        "name_th": "สโคป ทองหล่อ",
+        "district": "เขตวัฒนา",
+        "address": "ซอยทองหล่อ 13 แขวงคลองตันเหนือ เขตวัฒนา กรุงเทพฯ 10110",
+        "lat": 13.731, "lon": 100.578,
+        "units": 160,
+        "room_sizes": "45-130 ตร.ม.",
+        "sale_price": "12,000,000 - 40,000,000",
+        "rent_price": "40,000 - 120,000",
+        "developer": "SC Asset",
+        "phone": "02-119-0000",
+        "email": "info@scasset.com",
+        "bts": "BTS ทองหล่อ",
+        "pet_policy": "อนุญาตสัตว์เลี้ยงทุกขนาด"
+    },
+    {
+        "name": "Quintara MHy'ZEN Phrom Phong",
+        "name_th": "ควินทาร่า มายเซน พร้อมพงษ์",
+        "district": "เขตวัฒนา",
+        "address": "ซอยสุขุมวิท 39 แขวงคลองตันเหนือ เขตวัฒนา กรุงเทพฯ 10110",
+        "lat": 13.734, "lon": 100.568,
+        "units": 230,
+        "room_sizes": "30-75 ตร.ม.",
+        "sale_price": "7,000,000 - 18,000,000",
+        "rent_price": "25,000 - 70,000",
+        "developer": "Eastern Star",
+        "phone": "02-118-0000",
+        "email": "info@easternstar.co.th",
+        "bts": "BTS พร้อมพงษ์",
+        "pet_policy": "อนุญาตแมวและสุนัข"
+    },
+    {
+        "name": "Muniq Sukhumvit 23",
+        "name_th": "มิวนีค สุขุมวิท 23",
+        "district": "เขตวัฒนา",
+        "address": "ซอยสุขุมวิท 23 แขวงคลองตันเหนือ เขตวัฒนา กรุงเทพฯ 10110",
+        "lat": 13.739, "lon": 100.562,
+        "units": 180,
+        "room_sizes": "35-75 ตร.ม.",
+        "sale_price": "8,000,000 - 20,000,000",
+        "rent_price": "35,000 - 80,000",
+        "developer": "Major Development",
+        "phone": "02-116-1111",
+        "email": "info@mde.co.th",
+        "bts": "BTS อโศก / MRT สุขุมวิท",
+        "pet_policy": "Pet-Friendly"
+    },
+    {
+        "name": "Somerset Ekamai Bangkok",
+        "name_th": "ซัมเมอร์เซ็ต เอกมัย",
+        "district": "เขตวัฒนา",
+        "address": "ซอยสุขุมวิท 63 แขวงคลองตันเหนือ เขตวัฒนา กรุงเทพฯ 10110",
+        "lat": 13.728, "lon": 100.585,
+        "units": 180,
+        "room_sizes": "35-120 ตร.ม.",
+        "sale_price": "5,000,000 - 15,000,000",
+        "rent_price": "30,000 - 80,000",
+        "developer": "Somerset",
+        "phone": "02-123-4567",
+        "email": "info@somerset.com",
+        "bts": "BTS เอกมัย",
+        "pet_policy": "อนุญาตสัตว์เลี้ยง (Serviced Apartment)"
+    },
+    {
+        "name": "Marque Sukhumvit",
+        "name_th": "มาร์ค สุขุมวิท",
+        "district": "เขตวัฒนา",
+        "address": "ซอยสุขุมวิท 41 แขวงคลองตันเหนือ เขตวัฒนา กรุงเทพฯ 10110",
+        "lat": 13.736, "lon": 100.572,
+        "units": 220,
+        "room_sizes": "40-120 ตร.ม.",
+        "sale_price": "12,000,000 - 35,000,000",
+        "rent_price": "50,000 - 150,000",
+        "developer": "Major Development",
+        "phone": "02-116-1111",
+        "email": "info@mde.co.th",
+        "bts": "BTS พร้อมพงษ์",
+        "pet_policy": "อนุญาตสัตว์เลี้ยงทุกขนาด"
+    },
+    {
+        "name": "Valles Haus",
+        "name_th": "วัลเลส เฮาส์",
+        "district": "เขตวัฒนา",
+        "address": "สุขุมวิท แขวงพระโขนง เขตวัฒนา กรุงเทพฯ 10110",
+        "lat": 13.716, "lon": 100.592,
+        "units": 200,
+        "room_sizes": "28-65 ตร.ม.",
+        "sale_price": "4,690,000 - 12,000,000",
+        "rent_price": "18,000 - 50,000",
+        "developer": "Sansiri",
+        "phone": "1685",
+        "email": "info@sansiri.com",
+        "bts": "BTS ทองหล่อ / BTS พระโขนง",
+        "pet_policy": "Pet-Friendly Project (เปิดใหม่ 2027)"
+    },
 
     # ===== เขตคลองเตย (Khlong Toei) =====
     {
@@ -627,6 +723,22 @@ condos = [
         "bts": "BTS เพลินจิต",
         "pet_policy": "อนุญาตแมวและสุนัขขนาดเล็ก"
     },
+    {
+        "name": "98 Wireless",
+        "name_th": "ไนน์ตี้เอท ไวร์เลส",
+        "district": "เขตปทุมวัน",
+        "address": "ถนนวิทยุ แขวงลุมพินี เขตปทุมวัน กรุงเทพฯ 10330",
+        "lat": 13.740, "lon": 100.541,
+        "units": 200,
+        "room_sizes": "100-800 ตร.ม.",
+        "sale_price": "30,000,000 - 200,000,000",
+        "rent_price": "250,000 - 800,000",
+        "developer": "Raimon Land",
+        "phone": "02-168-9999",
+        "email": "info@raimonland.com",
+        "bts": "BTS เพลินจิต",
+        "pet_policy": "อนุญาตสัตว์เลี้ยงทุกขนาด (Luxury Residence)"
+    },
 
     # ===== เขตบางรัก (Bang Rak) =====
     {
@@ -793,6 +905,38 @@ condos = [
         "bts": "BTS พญาไท",
         "pet_policy": "อนุญาตสัตว์เลี้ยง"
     },
+    {
+        "name": "The Monument Sanampao",
+        "name_th": "เดอะ โมนูเมนต์ สนามเป้า",
+        "district": "เขตพญาไท",
+        "address": "พหลโยธิน แขวงสามเสนใน เขตพญาไท กรุงเทพฯ 10400",
+        "lat": 13.776, "lon": 100.543,
+        "units": 130,
+        "room_sizes": "45-120 ตร.ม.",
+        "sale_price": "12,000,000 - 40,000,000",
+        "rent_price": "60,000 - 160,000",
+        "developer": "Sansiri",
+        "phone": "1685",
+        "email": "info@sansiri.com",
+        "bts": "BTS สนามเป้า",
+        "pet_policy": "อนุญาตสัตว์เลี้ยงทุกขนาด"
+    },
+    {
+        "name": "Baxtor Paholyothin 14",
+        "name_th": "แบ็กซ์เตอร์ พหลโยธิน 14",
+        "district": "เขตพญาไท",
+        "address": "พหลโยธิน 14 แขวงสามเสนใน เขตพญาไท กรุงเทพฯ 10400",
+        "lat": 13.772, "lon": 100.543,
+        "units": 150,
+        "room_sizes": "25-55 ตร.ม.",
+        "sale_price": "3,500,000 - 7,000,000",
+        "rent_price": "15,000 - 35,000",
+        "developer": "Property Perfect",
+        "phone": "02-123-4567",
+        "email": "info@propertyperfect.com",
+        "bts": "BTS สะพานควาย",
+        "pet_policy": "อนุญาตแมวและสุนัขขนาดเล็ก"
+    },
 
     # ===== เขตราชเทวี (Ratchathewi) =====
     {
@@ -858,6 +1002,22 @@ condos = [
         "email": "info@mde.co.th",
         "bts": "BTS อนุสาวรีย์ชัย",
         "pet_policy": "อนุญาตสัตว์เลี้ยงทุกขนาด"
+    },
+    {
+        "name": "Chewathai Residence Asoke",
+        "name_th": "ชีวาทัย เรสซิเดนซ์ อโศก",
+        "district": "เขตราชเทวี",
+        "address": "อโศก-ดินแดง แขวงมักกะสัน เขตราชเทวี กรุงเทพฯ 10400",
+        "lat": 13.756, "lon": 100.560,
+        "units": 280,
+        "room_sizes": "28-65 ตร.ม.",
+        "sale_price": "4,000,000 - 10,000,000",
+        "rent_price": "18,000 - 45,000",
+        "developer": "Chewathai",
+        "phone": "02-123-4567",
+        "email": "info@chewathai.com",
+        "bts": "MRT เพชรบุรี",
+        "pet_policy": "อนุญาตแมวและสุนัข"
     },
 
     # ===== เขตห้วยขวาง (Huai Khwang) =====
@@ -972,6 +1132,22 @@ condos = [
         "email": "info@apthai.com",
         "bts": "MRT พระราม 9",
         "pet_policy": "อนุญาตแมวและสุนัข"
+    },
+    {
+        "name": "Chapter One ECO Ratchada-Huaikwang",
+        "name_th": "แชปเตอร์ วัน อีโค รัชดา-ห้วยขวาง",
+        "district": "เขตห้วยขวาง",
+        "address": "รัชดาภิเษก แขวงห้วยขวาง เขตห้วยขวาง กรุงเทพฯ",
+        "lat": 13.775, "lon": 100.571,
+        "units": 800,
+        "room_sizes": "26-50 ตร.ม.",
+        "sale_price": "2,800,000 - 5,500,000",
+        "rent_price": "15,000 - 30,000",
+        "developer": "Pruksa",
+        "phone": "02-123-4567",
+        "email": "info@pruksa.com",
+        "bts": "MRT ห้วยขวาง",
+        "pet_policy": "มี Pet Zone, อนุญาตแมวและสุนัขขนาดเล็ก"
     },
 
     # ===== เขตดินแดง (Din Daeng) =====
@@ -1205,6 +1381,22 @@ condos = [
         "bts": "BTS สถานีบางนา",
         "pet_policy": "อนุญาตแมวและสุนัข"
     },
+    {
+        "name": "Origin Plug & Play E22 Station",
+        "name_th": "ออริจิ้น ปลั๊ก แอนด์ เพลย์ อี22 สเตชั่น",
+        "district": "เขตบางนา",
+        "address": "สุขุมวิท แขวงบางนา เขตบางนา กรุงเทพฯ 10260",
+        "lat": 13.670, "lon": 100.624,
+        "units": 300,
+        "room_sizes": "22-35 ตร.ม.",
+        "sale_price": "1,990,000 - 4,500,000",
+        "rent_price": "9,000 - 18,000",
+        "developer": "Origin Property",
+        "phone": "1498",
+        "email": "info@origin.co.th",
+        "bts": "BTS บางนา",
+        "pet_policy": "Pet Service Solution ครบวงจร"
+    },
 
     # ===== เขตพระโขนง (Phra Khanong) =====
     {
@@ -1239,6 +1431,22 @@ condos = [
         "bts": "BTS พระโขนง",
         "pet_policy": "อนุญาตสัตว์เลี้ยง"
     },
+    {
+        "name": "The Line Sukhumvit 101",
+        "name_th": "เดอะ ไลน์ สุขุมวิท 101",
+        "district": "เขตพระโขนง",
+        "address": "สุขุมวิท 101 แขวงบางจาก เขตพระโขนง กรุงเทพฯ 10260",
+        "lat": 13.692, "lon": 100.606,
+        "units": 350,
+        "room_sizes": "30-65 ตร.ม.",
+        "sale_price": "7,500,000 - 15,000,000",
+        "rent_price": "25,000 - 55,000",
+        "developer": "Sansiri / BTS Group",
+        "phone": "1685",
+        "email": "info@sansiri.com",
+        "bts": "BTS บางจาก",
+        "pet_policy": "อนุญาตแมวและสุนัขขนาดเล็ก"
+    },
 
     # ===== เขตบางแค (Bang Khae) =====
     {
@@ -1272,6 +1480,22 @@ condos = [
         "email": "info@sansiri.com",
         "bts": "MRT หลักสอง",
         "pet_policy": "Pet-friendly มี Pet Park"
+    },
+    {
+        "name": "Origin Place Phetkasem",
+        "name_th": "ออริจิ้น เพลส เพชรเกษม",
+        "district": "เขตบางแค",
+        "address": "ถนนเพชรเกษม แขวงบางแค เขตบางแค กรุงเทพฯ 10160",
+        "lat": 13.701, "lon": 100.395,
+        "units": 280,
+        "room_sizes": "22-45 ตร.ม.",
+        "sale_price": "1,790,000 - 4,500,000",
+        "rent_price": "8,000 - 18,000",
+        "developer": "Origin Property",
+        "phone": "1498",
+        "email": "info@origin.co.th",
+        "bts": "BTS เพชรเกษม 48",
+        "pet_policy": "อนุญาตสัตว์เลี้ยง"
     },
 
     # ===== เขตบางซื่อ (Bang Sue) =====
@@ -1324,6 +1548,22 @@ condos = [
         "email": "info@sansiri.com",
         "bts": "-",
         "pet_policy": "อนุญาตสัตว์เลี้ยง"
+    },
+    {
+        "name": "Nue Riverest Ratburana",
+        "name_th": "นิว ริเวอร์เรสต์ ราษฎร์บูรณะ",
+        "district": "เขตราษฎร์บูรณะ",
+        "address": "ถนนราษฎร์บูรณะ แขวงราษฎร์บูรณะ เขตราษฎร์บูรณะ กรุงเทพฯ 10140",
+        "lat": 13.682, "lon": 100.508,
+        "units": 350,
+        "room_sizes": "22-45 ตร.ม.",
+        "sale_price": "1,990,000 - 4,500,000",
+        "rent_price": "8,000 - 20,000",
+        "developer": "All Inspire",
+        "phone": "02-123-4567",
+        "email": "info@allinspire.co.th",
+        "bts": "BTS ราษฎร์บูรณะ",
+        "pet_policy": "เฉพาะอาคาร Pet Allowed Tower"
     },
 
     # ===== เขตบางพลัด (Bang Phlat) =====
@@ -1483,6 +1723,23 @@ condos = [
     },
 
     # ===== เขตป้อมปราบศัตรูพ่าย (Pom Prap Sattru Phai) =====
+    # ===== เขตพระประแดง (Phra Pradaeng) =====
+    {
+        "name": "Brompton Pet Friendly Samrong Station",
+        "name_th": "บรอมป์ตัน เพ็ท เฟรนด์ลี่ สำโรง สเตชั่น",
+        "district": "เขตพระประแดง",
+        "address": "สุขุมวิท แขวงสำโรงเหนือ เขตพระประแดง สมุทรปราการ",
+        "lat": 13.646, "lon": 100.599,
+        "units": 250,
+        "room_sizes": "22-35 ตร.ม.",
+        "sale_price": "1,790,000 - 3,500,000",
+        "rent_price": "8,000 - 16,000",
+        "developer": "Origin Property",
+        "phone": "1498",
+        "email": "info@origin.co.th",
+        "bts": "BTS สำโรง",
+        "pet_policy": "Pet Friendly Project"
+    },
     # ===== เขตพระนคร (Phra Nakhon) =====
     # ===== เขตดุสิต (Dusit) =====
     # ===== เขตหนองจอก (Nong Chok) =====
@@ -1494,6 +1751,22 @@ condos = [
     # ===== เขตธนบุรี (Thon Buri) =====
     # ===== เขตบางกอกใหญ่ (Bangkok Yai) =====
     # ===== เขตคลองสาน (Khlong San) =====
+    {
+        "name": "Watermark Chaophraya",
+        "name_th": "วอร์เตอร์มาร์ค เจ้าพระยา",
+        "district": "เขตคลองสาน",
+        "address": "346 ถนนเจริญนคร แขวงคลองต้นไทร เขตคลองสาน กรุงเทพฯ 10600",
+        "lat": 13.734, "lon": 100.504,
+        "units": 400,
+        "room_sizes": "45-150 ตร.ม.",
+        "sale_price": "8,600,000 - 30,000,000",
+        "rent_price": "35,000 - 100,000",
+        "developer": "Country Group Development",
+        "phone": "02-123-4567",
+        "email": "info@countrygroup.co.th",
+        "bts": "BTS กรุงธนบุรี",
+        "pet_policy": "พื้นที่สำหรับน้องหมาและน้องแมว"
+    },
     # ===== เขตตลิ่งชัน (Taling Chan) =====
     # ===== เขตบางกอกน้อย (Bangkok Noi) =====
     # ===== เขตบางขุนเทียน (Bang Khun Thian) =====
@@ -1518,6 +1791,22 @@ condos = [
         "pet_policy": "อนุญาตสัตว์เลี้ยง"
     },
     # ===== เขตสวนหลวง (Suan Luang) =====
+    {
+        "name": "Park Court Sukhumvit 77",
+        "name_th": "พาร์ค คอร์ท สุขุมวิท 77",
+        "district": "เขตสวนหลวง",
+        "address": "สุขุมวิท 77 แขวงสวนหลวง เขตสวนหลวง กรุงเทพฯ 10250",
+        "lat": 13.710, "lon": 100.612,
+        "units": 180,
+        "room_sizes": "25-50 ตร.ม.",
+        "sale_price": "2,500,000 - 5,500,000",
+        "rent_price": "12,000 - 25,000",
+        "developer": "Land and Houses",
+        "phone": "02-123-4567",
+        "email": "info@lh.co.th",
+        "bts": "BTS อ่อนนุช",
+        "pet_policy": "อนุญาตสัตว์เลี้ยง"
+    },
     # ===== เขตจอมทอง (Chom Thong) =====
     # ===== เขตดอนเมือง (Don Mueang) =====
     # ===== เขตสายไหม (Sai Mai) =====
